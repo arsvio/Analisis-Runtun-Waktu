@@ -1,0 +1,16 @@
+# Forecasting HW menggunakan library forecast: ses, holt, hw (Rob Hyndman)
+
+library(forecast)
+
+# Contoh data penjualan motor
+motor = read.csv("...")
+
+honda = ts(motor$Honda, start = c(2008,1), frequency = 12)
+ts.plot(honda, main = "TS: Penjualan Honda", col = "blue")
+
+honda.ses = ses(honda, h = 2, level = c(95), initial = c("simple"), alpha = NULL, lambda = FALSE)
+honda.holt = holt(honda, h = 4, damped = TRUE,level = c(95), initial = c("optimal"), alpha = NULL, beta = NULL, 
+                  phi = NULL, lambda = FALSE)
+honda.hw = hw(honda, seasonal = c("multiplicative"), damped = FALSE, level = c(95), exponential = TRUE, alpha = NULL, 
+              beta = NULL, gamma = NULL)
+  

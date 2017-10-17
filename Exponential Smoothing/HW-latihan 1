@@ -1,0 +1,16 @@
+# Holt-Winter dengan R
+
+setwd ("...")
+sales = read.delim('clipboard', header = TRUE)
+sales = ts(sales, frequency = 4)
+ts.plot(sales, col = "blue", main = "TS: Sales")
+
+# HW
+holt.sales2 = HoltWinters(sales, alpha = 0.3, beta = 0.2, gamma = 0.5, seasonal = c("additive"), 
+                          l.start = mean(sales[1:4]), b.start =1/16*(sum(sales[5:8])-sum(sales[1:4])), 
+                          s.start = c(sales[1]-mean(sales[1:4]), sales[2]-mean(sales[1:4]), sales[3]-mean(sales[1:4]), sales[4]-mean(sales[1:4])))
+
+holt.sales2.pred = predict(holt.sales2, n.ahead = 4)
+
+ts.plot(sales, col = "blue", main = "TS: Sales")
+lines(holt.sales2$fitted[,1], col = "red")

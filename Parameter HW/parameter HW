@@ -1,0 +1,29 @@
+disel = read.csv(".../Bahan Bakar Disel NY.csv")
+disel = ts(disel$Bahan.Bakar.Disel, start = c(2007,1), frequency = 12)
+disel[1]
+ts.plot(disel, main = "TS: Disel")
+
+disel.holt1.1 = HoltWinters(disel, alpha = NULL, beta = NULL, gamma = 1, seasonal = c("additive"))
+disel.holt1.1
+par(mfrow = c(2,2))
+ts.plot(disel, main = "TS: Disel")
+plot(disel.holt1.1$fitted[,2], main = "HW: Level", col = "red", lwd = 2)
+plot(disel.holt1.1$fitted[,3], main = "HW: trend", col = "blue", lwd = 2)
+plot(disel.holt1.1$fitted[,4], main = "HW: season", col = "green", lwd = 2)
+
+
+
+disel.holt2 = HoltWinters(disel, alpha = NULL, beta = NULL, gamma = NULL, seasonal = c("additive"), l.start = mean(disel[1:12]),
+                          b.start = 1/144*(sum(disel[13:24])-sum(disel[1:12]))) 
+                                                                                                                    
+disel.holt2
+
+disel.holt3 = HoltWinters(disel, alpha = NULL, beta = NULL, gamma = NULL, seasonal = c("multiplicative"))
+disel.holt3
+
+par(mfrow = c(2,2))
+plot(disel, main = "TS: Disel")
+plot(disel.holt3$fitted[,2], main = "HW: Level", col = "red")
+plot(disel.holt3$fitted[,3], main = "HW: trend", col = "blue")
+plot(disel.holt3$fitted[,4], main = "HW: season", col = "green")
+                          
